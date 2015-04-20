@@ -3,15 +3,15 @@ import java.util.Set;
 
 public class CreateGraph<V, E> implements Graph<V, E>  {
 	
-	private HashMap<Integer, Vertex<V, E>> vert = new HashMap<Integer, Vertex<V, E>>();
-	private HashMap<Integer, Edge<E>> edge = new HashMap<Integer, Edge<E>>();
+	private HashMap<Integer, HashVertex<V, E>> vert = new HashMap<Integer, HashVertex<V, E>>();
+	private HashMap<Integer, HashEdge<E>> edge = new HashMap<Integer, HashEdge<E>>();
 	
 	int num_Vertexes = 0;
 	int num_Edges = 0;
 	
 	@Override
 	public int addVertex(V v) {
-		Vertex<V, E> vertex = new Vertex<V, E>(v, num_Vertexes);
+		HashVertex<V, E> vertex = new HashVertex<V, E>(v, num_Vertexes);
 		int ID = vertex.uniqueID;
 		
 		vert.put(ID, vertex);
@@ -25,7 +25,7 @@ public class CreateGraph<V, E> implements Graph<V, E>  {
 			int ID = -1;
 		if(vert.containsKey(srcID) && vert.containsKey(targetID)){
 			@SuppressWarnings({ })
-			Edge<E> e = new Edge<E>(srcID, targetID, attr, num_Edges);
+			HashEdge<E> e = new HashEdge<E>(srcID, targetID, attr, num_Edges);
 			ID = e.uniqueID;
 			
 			edge.put(ID, e);

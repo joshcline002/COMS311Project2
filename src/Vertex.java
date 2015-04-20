@@ -1,22 +1,24 @@
-import java.util.HashMap;
 
-public class Vertex<V, E>{
-		int uniqueID;
-		V data;
-		// 0 is undiscovered 1 is discovered 2 for unresolved.
-		int discovered = 0;
-		HashMap<Integer, Edge<E>> outgoingEdges = new HashMap<Integer, Edge<E>>();
-		
-		public Vertex(V data, int num_Vertexes) {
-			this.uniqueID = num_Vertexes;
-			this.data = data;
-		}
-		
-		public void setDiscovered(int dis){
-			 discovered = dis;
-		}
-		
-		public int getDiscovered(){
-			return discovered;
-		}
+public class Vertex {
+	private int id;
+	private double latitude;
+	private double longitude;
+	
+	public Vertex(int id, double latitude, double longitude){
+		this.id = id;
+		this.latitude = latitude;
+		this.longitude = longitude;
+	}
+	
+	public int getID(){
+		return id;
+	}
+	
+	public double getLatitude(){
+		return latitude;
+	}
+	
+	public double getLongitude(){
+		return longitude;
+	}
 }

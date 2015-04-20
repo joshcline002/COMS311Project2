@@ -23,9 +23,10 @@ public class SolvingCoffee<V, E> implements CoffeeSolver<V, E> {
 	@Override
 	public Collection<List<Integer>> generateValidSortS(Graph<V, E> graph) {
 		Collection<List<Integer>> col = new HashSet<>();
-		Set<Integer> vert = graph.getVertices();
-		while(vert.iterator().hasNext()){
-			
+		Iterator<Integer> vert = graph.getVertices().iterator();
+		while(vert.hasNext()){
+			DFS(graph, vert.next());
+			col.add(sorted_Graph);
 		}
 		return null;
 	}
