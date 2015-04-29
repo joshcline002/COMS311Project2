@@ -20,11 +20,10 @@ public class SolvingCoffee<V, E> implements CoffeeSolver<V, E> {
 		Dijkstra<V,E> shortCompute = new ShortPathDijkstra<V,E>();
 		shortCompute.setGraph(graph);
 		shortCompute.setWeighing(weigh);
-		path.add(locations.get(0));
 		for(int i = 0; i< locations.size()-1; i++){
 			shortCompute.setStart(locations.get(i));
 			shortCompute.computeShortestPath();
-			path.addAll(shortCompute.getPath(i+1));
+			path.addAll(shortCompute.getPath(locations.get(i+1)));
 		}
 		return path;
 	}
