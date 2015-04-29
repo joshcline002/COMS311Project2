@@ -4,7 +4,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Stack;
 
 
 public class SolvingCoffee<V, E> implements CoffeeSolver<V, E> {
@@ -33,15 +32,11 @@ public class SolvingCoffee<V, E> implements CoffeeSolver<V, E> {
 	@Override
 	public Collection<List<Integer>> generateValidSortS(Graph<V, E> graph) {
 		Collection<List<Integer>> col = new HashSet<List<Integer>>();
-		Stack<List<Integer>> tempCol = new Stack<List<Integer>>();
 		Iterator<Integer> vert = graph.getVertices().iterator();
 		while(vert.hasNext()){
 			sorted_Graph = new ArrayList<Integer>();
 			DFS(graph, vert.next());
-			tempCol.push(sorted_Graph);
-		}
-		while(!tempCol.empty()){
-			col.add(tempCol.pop());
+			col.add(sorted_Graph);
 		}
 		return col;
 	}
