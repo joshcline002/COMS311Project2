@@ -5,7 +5,7 @@ import java.io.IOException;
 
 public class Tester {
 	public static <V,E> void main(String[] args) throws IOException{
-		Graph<V,E> graph = new CreateGraph<V,E>();
+		Graph<Vertex,Edge> graph = new CreateGraph<Vertex,Edge>();
 		BufferedReader reader = new BufferedReader(new FileReader("src/AmesData.txt"));
 		String line = reader.readLine();
 		int count = Integer.parseInt(line.substring(1+line.indexOf(':')).trim());

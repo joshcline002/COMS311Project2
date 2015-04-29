@@ -10,7 +10,6 @@ public class HashEdge<E>{
 			this.targetID = targetID;
 			this.attr = attr;
 			uniqueID = num_Edges;
-			num_Edges++;
 		}
 		
 		

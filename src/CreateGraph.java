@@ -12,6 +12,7 @@ public class CreateGraph<V, E> implements Graph<V, E>  {
 	@Override
 	public int addVertex(V v) {
 		HashVertex<V, E> vertex = new HashVertex<V, E>(v, num_Vertexes);
+		num_Vertexes++;
 		int ID = vertex.uniqueID;
 		
 		vert.put(ID, vertex);
@@ -26,6 +27,7 @@ public class CreateGraph<V, E> implements Graph<V, E>  {
 		if(vert.containsKey(srcID) && vert.containsKey(targetID)){
 			@SuppressWarnings({ })
 			HashEdge<E> e = new HashEdge<E>(srcID, targetID, attr, num_Edges);
+			num_Edges++;
 			ID = e.uniqueID;
 			
 			edge.put(ID, e);
