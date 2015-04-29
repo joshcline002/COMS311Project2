@@ -1,37 +1,56 @@
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Stack;
 
 
 public class SolvingCoffee<V, E> implements CoffeeSolver<V, E> {
 	
 	ArrayList<Integer> sorted_Graph;
 	
-	private final int UNDISCOVERED = 0;
-	private final int DISCOVERED = 1;
-	private final int UNRESOLVED = 1;
+	private final Integer UNDISCOVERED = 0;
+	private final Integer DISCOVERED = 1;
+	private final Integer UNRESOLVED = 1;
 	
 	@Override
 	public List<Integer> shortestPath(Graph<V, E> graph, List<Integer> locations, Weighing<E> weigh) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Integer> path = new ArrayList<Integer>();
+		Dijkstra<V,E> shortCompute = new ShortPathDijkstra<V,E>();
+		shortCompute.setGraph(graph);
+		shortCompute.setWeighing(weigh);
+		path.add(locations.get(0));
+		for(int i = 0; i< locations.size()-1; i++){
+			shortCompute.setStart(locations.get(i));
+			shortCompute.computeShortestPath();
+			path.addAll(shortCompute.getPath(i+1));
+		}
+		return path;
 	}
 
 	@Override
 	public Collection<List<Integer>> generateValidSortS(Graph<V, E> graph) {
-		Collection<List<Integer>> col = new HashSet<>();
+		Collection<List<Integer>> col = new HashSet<List<Integer>>();
+		Stack<List<Integer>> tempCol = new Stack<List<Integer>>();
 		Iterator<Integer> vert = graph.getVertices().iterator();
 		while(vert.hasNext()){
+			sorted_Graph = new ArrayList<Integer>();
 			DFS(graph, vert.next());
-			col.add(sorted_Graph);
+			tempCol.push(sorted_Graph);
 		}
-		return null;
+		while(!tempCol.empty()){
+			col.add(tempCol.pop());
+		}
+		return col;
 	}
 	
 	public void DFS(Graph<V,E> G, int vID){
 		Integer[] disc = new Integer[G.getVertices().size()];
+		for(int i = 0; i<disc.length; i++){
+			disc[i] = UNDISCOVERED;
+		}
 		if(disc[vID]==UNRESOLVED){
 			throw new IllegalStateException("Graph contains a cycle.");
 		}
