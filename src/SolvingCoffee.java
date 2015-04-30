@@ -3,6 +3,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 
 public class SolvingCoffee<V, E> implements CoffeeSolver<V, E> {
@@ -37,11 +38,16 @@ public class SolvingCoffee<V, E> implements CoffeeSolver<V, E> {
 		Collection<List<Integer>> col = new HashSet<List<Integer>>();
 		Iterator<Integer> vert = graph.getVertices().iterator();
 		while(vert.hasNext()){
-			
 			sorted_Graph = new ArrayList<Integer>();
 			try{
 				disc = new Integer[graph.getVertices().size()];
-				DFS(graph, vert.next());
+				int next = vert.next();
+				DFS(graph, next);
+				for(int i = 0; i<disc.length; i++){
+					if( disc[i] == null){
+						DFS(graph, i);
+					}
+				}
 				col.add(sorted_Graph);
 			}catch(Exception e){
 			}
