@@ -11,6 +11,7 @@ import org.junit.Test;
 public class TestingCode {
 	
 	Graph<Vertex, Edge> graph;
+	Graph<Vertex, Edge> graph2;
 	Dijkstra<Vertex, Edge> shortBus;
 	Weighing<Edge> weight;
 	CoffeeSolver<Vertex, Edge> coffee;
@@ -25,12 +26,35 @@ public class TestingCode {
 	public void setup()
 	{
 		graph = new CreateGraph<Vertex, Edge>();
+		graph2 = new CreateGraph<Vertex, Edge>();
 		shortBus = new ShortPathDijkstra<Vertex, Edge>();
 		weight = new EdgeWeight<Edge>();
 		coffee = new SolvingCoffee<Vertex, Edge>();
 		loc1 = new ArrayList<Integer>();
 		loc2 = new ArrayList<Integer>();
 		loc3 = new ArrayList<Integer>();
+		
+		
+		Vertex A = new Vertex(1, 0, 0);
+		Vertex B = new Vertex(1, 0, 0);
+		Vertex C = new Vertex(1, 0, 0);
+		Vertex D = new Vertex(1, 0, 0);
+		
+		Edge ab = new Edge(0, 1, A, B);
+		Edge ad = new Edge(0, 1, A, D);
+		Edge bd = new Edge(0, 1, B, D);
+		Edge cd = new Edge(0, 1, C, D);
+		
+		graph2.addVertex(A);
+		graph2.addVertex(B);
+		graph2.addVertex(C);
+		graph2.addVertex(D);
+		
+		graph2.addEdge(0, 1, ab);
+		graph2.addEdge(0, 3, ad);
+		graph2.addEdge(1, 3, bd);
+		graph2.addEdge(2, 3, cd);
+		
 		
 		
 		
@@ -202,6 +226,12 @@ public class TestingCode {
 		check.add(5);
 		System.out.println(T);
 		assertTrue(T.contains(check));
+	}
+	
+	@Test
+	public void valid1(){
+		Collection<List<Integer>> T = coffee.generateValidSortS(graph2);
+		System.out.println(T);
 	}
 	
 	
