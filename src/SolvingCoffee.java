@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -9,21 +8,26 @@ import java.util.List;
 public class SolvingCoffee<V, E> implements CoffeeSolver<V, E> {
 	
 	ArrayList<Integer> sorted_Graph;
+	Integer[] disc;
 	
-	private final Integer UNDISCOVERED = 0;
 	private final Integer DISCOVERED = 1;
 	private final Integer UNRESOLVED = 1;
 	
 	@Override
 	public List<Integer> shortestPath(Graph<V, E> graph, List<Integer> locations, Weighing<E> weigh) {
 		List<Integer> path = new ArrayList<Integer>();
+		List<Integer> tempPath = new ArrayList<Integer>();
 		Dijkstra<V,E> shortCompute = new ShortPathDijkstra<V,E>();
 		shortCompute.setGraph(graph);
 		shortCompute.setWeighing(weigh);
+		path.add(locations.get(0));
 		for(int i = 0; i< locations.size()-1; i++){
 			shortCompute.setStart(locations.get(i));
 			shortCompute.computeShortestPath();
-			path.addAll(shortCompute.getPath(locations.get(i+1)));
+			tempPath = shortCompute.getPath(locations.get(i+1));
+			for(int j = 1; j< tempPath.size(); j++){
+				path.add(tempPath.get(j));
+			}
 		}
 		return path;
 	}
@@ -33,18 +37,19 @@ public class SolvingCoffee<V, E> implements CoffeeSolver<V, E> {
 		Collection<List<Integer>> col = new HashSet<List<Integer>>();
 		Iterator<Integer> vert = graph.getVertices().iterator();
 		while(vert.hasNext()){
+			
 			sorted_Graph = new ArrayList<Integer>();
-			DFS(graph, vert.next());
-			col.add(sorted_Graph);
+			try{
+				disc = new Integer[graph.getVertices().size()];
+				DFS(graph, vert.next());
+				col.add(sorted_Graph);
+			}catch(Exception e){
+			}
 		}
 		return col;
 	}
 	
 	public void DFS(Graph<V,E> G, int vID){
-		Integer[] disc = new Integer[G.getVertices().size()];
-		for(int i = 0; i<disc.length; i++){
-			disc[i] = UNDISCOVERED;
-		}
 		if(disc[vID]==UNRESOLVED){
 			throw new IllegalStateException("Graph contains a cycle.");
 		}
@@ -66,6 +71,7 @@ public class SolvingCoffee<V, E> implements CoffeeSolver<V, E> {
 	public List<Integer> sortVertices(Graph<V, E> graph) {
 		sorted_Graph = new ArrayList<Integer>();
 		try{
+		disc = new Integer[graph.getVertices().size()];
 		DFS(graph, graph.getVertices().iterator().next());
 		} catch (IllegalStateException e){
 			return null;
