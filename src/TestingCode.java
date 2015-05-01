@@ -39,21 +39,25 @@ public class TestingCode {
 		Vertex B = new Vertex(1, 0, 0);
 		Vertex C = new Vertex(1, 0, 0);
 		Vertex D = new Vertex(1, 0, 0);
+		Vertex E = new Vertex(1, 0, 0);
 		
 		Edge ab = new Edge(0, 1, A, B);
 		Edge ad = new Edge(0, 1, A, D);
 		Edge bd = new Edge(0, 1, B, D);
 		Edge cd = new Edge(0, 1, C, D);
+		Edge ae = new Edge(0, 1, A, E);
 		
 		graph2.addVertex(A);
 		graph2.addVertex(B);
 		graph2.addVertex(C);
 		graph2.addVertex(D);
+		graph2.addVertex(E);
 		
 		graph2.addEdge(0, 1, ab);
 		graph2.addEdge(0, 3, ad);
 		graph2.addEdge(1, 3, bd);
 		graph2.addEdge(2, 3, cd);
+		graph2.addEdge(0, 4, ae);
 		
 		
 		
@@ -215,29 +219,14 @@ public class TestingCode {
 	}
 	
 	@Test
-	public void valid0(){
+	public void validGraph(){
 		Collection<List<Integer>> T = coffee.generateValidSortS(graph);
-		List<Integer> check = new ArrayList<Integer>();
-		check.add(0);
-		check.add(1);
-		check.add(4);
-		check.add(2);
-		check.add(3);
-		check.add(5);
-		System.out.println(T);
-		assertTrue(T.contains(check));
+		assertTrue(T.toString().compareTo("[[0, 1, 4, 2, 3, 5]]")==0);
 	}
 	
 	@Test
-	public void valid1(){
+	public void validGraph2(){
 		Collection<List<Integer>> T = coffee.generateValidSortS(graph2);
-		System.out.println(T);
+		assertTrue(T.toString().compareTo("[[0, 1, 2, 3, 4], [2, 0, 4, 1, 3], [0, 2, 4, 1, 3], [0, 1, 4, 2, 3], [0, 1, 2, 4, 3]]")==0);
 	}
-	
-	
-	
-	
-	
-
-
 }

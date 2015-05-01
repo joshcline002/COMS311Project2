@@ -2,6 +2,8 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 
@@ -31,16 +33,6 @@ public class Tester {
 		reader.close();
 		
 		Weighing<Edge> weigh = new EdgeWeight<Edge>();
-		
-		List<Integer> loc1 = new ArrayList<Integer>();
-		loc1.add(2893);
-		loc1.add(1055);
-		loc1.add(371);
-		loc1.add(2874);
-		loc1.add(2351);
-		loc1.add(2956);
-		loc1.add(1171);
-		loc1.add(1208);
 		
 		Vertex ME = graph.getData(2893);
 		Vertex A = graph.getData(1055);
@@ -77,13 +69,41 @@ public class Tester {
 		
 		SolvingCoffee<Vertex,Edge> test = new SolvingCoffee<Vertex,Edge>();
 		
-		System.out.println(test.shortestPath(graph, loc1, weigh));
+		System.out.println(" Random Ordering path \n");
 		
-		System.out.println(test.sortVertices(depGraph));
+		List<Integer> randomOrdering = test.sortVertices(depGraph);
 		
-		System.out.println(test.generateValidSortS(depGraph));
+		List<Integer> randomOrderConverted = new ArrayList<Integer>();
+		for(int i = 0; i<randomOrdering.size(); i++){
+			randomOrderConverted.add(depGraph.getData(randomOrdering.get(i)).getID());
+		}
+		List<Integer> path = test.shortestPath(graph, randomOrderConverted, weigh);
+		System.out.println("Cost : " + test.getCost() + " Ordering : " + randomOrderConverted + " Path : " + path);
 		
-		System.out.println(test.shortestPath(graph, loc1, weigh));
+		
+		
+		Collection<List<Integer>> T = test.generateValidSortS(depGraph);
+		System.out.println("\n All valid orderings \n");
+		System.out.println(T);
+		Iterator<List<Integer>> I = T.iterator();
+		List<Integer> BestShortestPath = new ArrayList<Integer>();
+		List<Integer> ShortestOrdering = new ArrayList<Integer>();
+		double cost = Double.POSITIVE_INFINITY;
+		while(I.hasNext()){
+			List<Integer> locUnconvert = I.next();
+			List<Integer> locConvert = new ArrayList<Integer>();
+			for(int i = 0; i<locUnconvert.size(); i++){
+				locConvert.add(depGraph.getData(locUnconvert.get(i)).getID());
+			}
+			List<Integer> temp = test.shortestPath(graph,locConvert, weigh);
+			if(cost > test.getCost()){
+				cost = test.getCost();
+				BestShortestPath = temp;
+				ShortestOrdering = locConvert;
+			}
+		}
+		System.out.println("\n Shortest Ordering \n");
+		System.out.println("Cost : " + cost + " Shortest Ordering : " + ShortestOrdering + " Path : " + BestShortestPath);
 		
 	}
 }

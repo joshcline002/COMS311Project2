@@ -10,12 +10,14 @@ public class SolvingCoffee<V, E> implements CoffeeSolver<V, E> {
 	
 	ArrayList<Integer> sorted_Graph;
 	Integer[] disc;
+	double cost;
 	
 	private final Integer DISCOVERED = 1;
 	private final Integer UNRESOLVED = 1;
 	
 	@Override
 	public List<Integer> shortestPath(Graph<V, E> graph, List<Integer> locations, Weighing<E> weigh) {
+		cost = 0;
 		List<Integer> path = new ArrayList<Integer>();
 		List<Integer> tempPath = new ArrayList<Integer>();
 		Dijkstra<V,E> shortCompute = new ShortPathDijkstra<V,E>();
@@ -26,6 +28,7 @@ public class SolvingCoffee<V, E> implements CoffeeSolver<V, E> {
 			shortCompute.setStart(locations.get(i));
 			shortCompute.computeShortestPath();
 			tempPath = shortCompute.getPath(locations.get(i+1));
+			cost += shortCompute.getCost(locations.get(i+1));
 			for(int j = 1; j< tempPath.size(); j++){
 				path.add(tempPath.get(j));
 			}
@@ -44,8 +47,8 @@ public class SolvingCoffee<V, E> implements CoffeeSolver<V, E> {
 				int next = vert.next();
 				DFS(graph, next);
 				for(int i = 0; i<disc.length; i++){
-					if( disc[i] == null){
-						DFS(graph, i);
+					if( disc[disc.length-1-i] == null){
+						DFS(graph, disc.length-1-i);
 					}
 				}
 				col.add(sorted_Graph);
@@ -83,6 +86,10 @@ public class SolvingCoffee<V, E> implements CoffeeSolver<V, E> {
 			return null;
 		}
 		return sorted_Graph;
+	}
+	
+	public double getCost(){
+		return cost;
 	}
 
 }
