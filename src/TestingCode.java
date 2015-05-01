@@ -2,6 +2,7 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import org.junit.Before;
@@ -12,9 +13,11 @@ public class TestingCode {
 	
 	Graph<Vertex, Edge> graph;
 	Graph<Vertex, Edge> graph2;
+	Graph<Vertex, Edge> graph3;
+	Graph<Vertex, Edge> depGraph;
 	Dijkstra<Vertex, Edge> shortBus;
 	Weighing<Edge> weight;
-	CoffeeSolver<Vertex, Edge> coffee;
+	SolvingCoffee<Vertex, Edge> coffee;
 	Edge e;
 	Vertex v;
 	List<Integer> loc1;
@@ -27,6 +30,8 @@ public class TestingCode {
 	{
 		graph = new CreateGraph<Vertex, Edge>();
 		graph2 = new CreateGraph<Vertex, Edge>();
+		graph3 = new CreateGraph<Vertex, Edge>();
+		depGraph = new CreateGraph<Vertex, Edge>();
 		shortBus = new ShortPathDijkstra<Vertex, Edge>();
 		weight = new EdgeWeight<Edge>();
 		coffee = new SolvingCoffee<Vertex, Edge>();
@@ -35,17 +40,17 @@ public class TestingCode {
 		loc3 = new ArrayList<Integer>();
 		
 		
-		Vertex A = new Vertex(1, 0, 0);
+		Vertex A = new Vertex(0, 0, 0);
 		Vertex B = new Vertex(1, 0, 0);
-		Vertex C = new Vertex(1, 0, 0);
-		Vertex D = new Vertex(1, 0, 0);
-		Vertex E = new Vertex(1, 0, 0);
+		Vertex C = new Vertex(2, 0, 0);
+		Vertex D = new Vertex(3, 0, 0);
+		Vertex E = new Vertex(4, 0, 0);
 		
 		Edge ab = new Edge(0, 1, A, B);
-		Edge ad = new Edge(0, 1, A, D);
-		Edge bd = new Edge(0, 1, B, D);
-		Edge cd = new Edge(0, 1, C, D);
-		Edge ae = new Edge(0, 1, A, E);
+		Edge ad = new Edge(1, 1, A, D);
+		Edge bd = new Edge(2, 1, B, D);
+		Edge cd = new Edge(3, 1, C, D);
+		Edge ae = new Edge(4, 1, A, E);
 		
 		graph2.addVertex(A);
 		graph2.addVertex(B);
@@ -59,8 +64,65 @@ public class TestingCode {
 		graph2.addEdge(2, 3, cd);
 		graph2.addEdge(0, 4, ae);
 		
+		Vertex A3 = new Vertex(0, 0, 0);
+		Vertex B3 = new Vertex(3, 0, 0);
+		Vertex C3 = new Vertex(7, 0, 0);
+		Vertex D3 = new Vertex(4, 0, 0);
+		Vertex E3 = new Vertex(5, 0, 0);
 		
+		depGraph.addVertex(A3);
+		depGraph.addVertex(B3);
+		depGraph.addVertex(C3);
+		depGraph.addVertex(D3);
+		depGraph.addVertex(E3);
 		
+		depGraph.addEdge(0, 1,new Edge(0, 1, A3, B3));
+		depGraph.addEdge(0, 3,new Edge(1, 1, A3, D3));
+		depGraph.addEdge(1, 2,new Edge(2, 1, B3, C3));
+		depGraph.addEdge(1, 4,new Edge(3, 1, B3, E3));
+		depGraph.addEdge(3, 2,new Edge(4, 1, D3, C3));
+		
+		Vertex Aa3 = new Vertex(0, 0, 0);
+		Vertex F3 = new Vertex(1, 0, 0);
+		Vertex G3 = new Vertex(2, 0, 0);
+		Vertex Bb3 = new Vertex(3, 0, 0);
+		Vertex Dd3 = new Vertex(4, 0, 0);
+		Vertex Cc3 = new Vertex(5, 0, 0);
+		Vertex H3 = new Vertex(6, 0, 0);
+		Vertex Ee3 = new Vertex(7, 0, 0);
+		
+		Edge af3 = new Edge(0, 5, Aa3, F3);
+		Edge ag3 = new Edge(1, 1, Aa3, G3);
+		Edge fb3 = new Edge(2, 1, F3, Bb3);
+		Edge gd3 = new Edge(3, 1, G3, Dd3);
+		Edge gc3 = new Edge(4, 1, G3, Cc3);
+		Edge df3 = new Edge(5, 1, Dd3, F3);
+		Edge dh3 = new Edge(6, 5, Dd3, H3);
+		Edge he3 = new Edge(7, 5, H3, E3);
+		Edge ce3 = new Edge(8, 1, Cc3, E3);
+		Edge bh3 = new Edge(9, 1, Bb3, H3);
+		Edge hc3 = new Edge(10, 1, H3, Cc3);
+		
+		graph3.addVertex(Aa3);
+		graph3.addVertex(F3);
+		graph3.addVertex(G3);
+		graph3.addVertex(Bb3);
+		graph3.addVertex(Dd3);
+		graph3.addVertex(Cc3);
+		graph3.addVertex(H3);
+		graph3.addVertex(Ee3);
+		
+		graph3.addEdge(0, 1, af3);
+		graph3.addEdge(0, 2, ag3);
+		graph3.addEdge(1, 3, fb3);
+		graph3.addEdge(2, 4, gd3);
+		graph3.addEdge(2, 5, gc3);
+		graph3.addEdge(4, 1, df3);
+		graph3.addEdge(4, 6, dh3);
+		graph3.addEdge(6, 7, he3);
+		graph3.addEdge(5, 7, ce3);
+		graph3.addEdge(3, 6, bh3);
+		graph3.addEdge(6, 5, hc3);
 		
 		v = new Vertex(0, 0, 0);
 		
@@ -228,5 +290,35 @@ public class TestingCode {
 	public void validGraph2(){
 		Collection<List<Integer>> T = coffee.generateValidSortS(graph2);
 		assertTrue(T.toString().compareTo("[[0, 1, 2, 3, 4], [2, 0, 4, 1, 3], [0, 2, 4, 1, 3], [0, 1, 4, 2, 3], [0, 1, 2, 4, 3]]")==0);
+	}
+	
+	@Test
+	public void THEshortestPath(){
+		shortBus.setGraph(graph3);
+		shortBus.setStart(0);
+		shortBus.setWeighing(weight);
+		Collection<List<Integer>> T = coffee.generateValidSortS(depGraph);
+		System.out.println(T);
+		Iterator<List<Integer>> I = T.iterator();
+		List<Integer> BestShortestPath = new ArrayList<Integer>();
+		List<Integer> ShortestOrdering = new ArrayList<Integer>();
+		double cost = Double.POSITIVE_INFINITY;
+		while(I.hasNext()){
+			List<Integer> locUnconvert = I.next();
+			List<Integer> locConvert = new ArrayList<Integer>();
+			for(int i = 0; i<locUnconvert.size(); i++){
+				locConvert.add(depGraph.getData(locUnconvert.get(i)).getID());
+			}
+			System.out.println(locConvert);
+			List<Integer> temp = coffee.shortestPath(graph3,locConvert, weight);
+			if(cost > coffee.getCost()){
+				cost = coffee.getCost();
+				BestShortestPath = temp;
+				ShortestOrdering = locConvert;
+			}
+		}
+		System.out.println("\n Shortest Ordering \n");
+		System.out.println("Cost : " + cost + " Shortest Ordering : " + ShortestOrdering + " Path : " + BestShortestPath);
+		assertTrue(cost == 7);
 	}
 }
